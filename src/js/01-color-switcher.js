@@ -1,13 +1,27 @@
 import '../css/common.css';
 
-// const logger = time => {
-//   console.log('Лог через ${time}ms, потому что не отменили таймаут');
-// };
-// const timerId = setTimeout(logger, 2000, 2000);
-// console.log(timerId);
+function getRandomHexColor() {
+  return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+}
+const body = document.querySelector('body');
+const startBtn = document.querySelector('[data-start]');
+const stopBtn = document.querySelector('[data-stop]');
 
-// const shouldCancelTimer = Math.random() > 0.4;
-// console.log(shouldCancelTimer);
-// if (shouldCancelTimer) {
-//   clearTimeout(timerId);
-// }
+stopBtn.disabled = true;
+timerId = null;
+startBtn.addEventListener('click', onBtnStart);
+
+function onBtnStart() {
+  timerId = setInterval(() => {
+    startBtn.disabled = true;
+    stopBtn.disabled = false;
+    body.style.backgroundColor = getRandomHexColor();
+  }, 1000);
+}
+stopBtn.addEventListener('click', onBtnStop);
+
+function onBtnStop() {
+  clearInterval(timerId);
+  startBtn.disabled = false;
+  stopBtn.disabled = true;
+}
