@@ -15,9 +15,8 @@ const options = {
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
-  onclose(selectedDates) {
+  onClose(selectedDates) {
     if (selectedDates[0] < new Date()) {
-      console.log(selectedDates[0]);
       Notiflix.Notify.failure('Выберите будущую дату');
       btnStart.disabled = true;
     } else {
