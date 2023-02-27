@@ -1,79 +1,38 @@
-// function createPromise(position, delay) {
-//   const shouldResolve = Math.random() > 0.3;
-//   if (shouldResolve) {
-//     // Fulfill
-//   } else {
-//     // Reject
-//   }
-// }
-// const promise = new Promise((resolve, reject) => {
-//   const canFulFill = Math.random() > 0.5;
-//   setTimeout(() => {
-//     if (canFulFill) {
-//       resolve('Succes');
-//     }
-//     reject('error');
-//   }, 2000);
-// });
+import Notiflix from 'notiflix';
+const delay = document.querySelector('input[name="delay"]');
+const step = document.querySelector('input[name="step"]');
+const amount = document.querySelector('input[name="amount"]');
+const btnCreatePromise = document.querySelector('button[type="submit"]');
 
-// promise.then(onFulfilled, onRejected);
-
-// function onFulfilled(result) {
-//   console.log(`${result}`);
-// }
-// function onRejected(error) {
-//   console.log(`${error}`);
-// }
-// Change value of isSuccess variable to call resolve or reject
-// Change value of isSuccess variable to call resolve or reject
-// const isSuccess = false;
-
-// const promise = new Promise((resolve, reject) => {
-//   setTimeout(() => {
-//     if (isSuccess) {
-//       resolve('Success! Value passed to resolve function');
-//     } else {
-//       reject('Error! Error passed to reject function');
-//     }
-//   }, 2000);
-// });
-
-// // Will run first
-// console.log('Before promise.then()');
-
-// // Registering promise callbacks
-// promise.then(
-//   // onResolve will run third or not at all
-//   value => {
-//     console.log('onResolve call inside promise.then()');
-//     console.log(value); // "Success! Value passed to resolve function"
-//   },
-//   // onReject will run third or not at all
-//   error => {
-//     console.log('onReject call inside promise.then()');
-//     console.log(error); // "Error! Error passed to reject function"
-//   }
-// );
-
-// // Will run second
-// console.log('After promise.then()');
-const fetchUserFromServer = username => {
-  return new Promise((resolve, reject) => {
-    console.log(`Fetching data for ${username}`);
-
+function createPromise(position, delay) {
+  const promise = new Promise((resolve, reject) => {
     setTimeout(() => {
-      // Change value of isSuccess variable to simulate request status
-      const isSuccess = true;
-
-      if (isSuccess) {
-        resolve('success value');
+      const shouldResolve = Math.random() > 0.3;
+      if (shouldResolve) {
+        resolve({ position, delay });
       } else {
-        reject('error');
+        reject({ position, delay });
       }
-    }, 2000);
+    }, delay);
   });
-};
+  return promise;
+}
 
-fetchUserFromServer('Mango')
-  .then(user => console.log(user))
-  .catch(error => console.error(error));
+btnCreatePromise.addEventListener('click', e => {
+  e.preventDefault();
+  let firstDelay = Number(delay.value);
+  let delayStep = Number(step.value);
+  for (let i = 0; i < amount.value; i++) {
+    createPromise(1 + i, firstDelay + i * delayStep)
+      .then(({ position, delay }) => {
+        Notiflix.Notify.success(
+          `✅ Fulfilled promise ${position} in ${delay}ms`
+        );
+      })
+      .catch(({ position, delay }) => {
+        Notiflix.Notify.failure(
+          `❌ Rejected promise ${position} in ${delay}ms`
+        );
+      });
+  }
+});
