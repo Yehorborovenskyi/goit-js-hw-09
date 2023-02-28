@@ -34,5 +34,6 @@ btnCreatePromise.addEventListener('click', e => {
           `❌ Rejected promise ${position} in ${delay}ms`
         );
       });
+    firstDelay += delayStep;
   }
 });
